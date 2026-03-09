@@ -749,20 +749,11 @@ let contract, currentGameId = null;
 
 
     
-    async function connectWallet() {
-         if (!window.ethereum) {
-    showNotif('Please install MetaMask', 'no');
-    return;
-  }
-      try {
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        account = accounts[0];
-        showNotif('Wallet connected', 'yes');
-      } catch {
-        console.error(e);
-        showNotif('Wallet rejected', 'no');
-      }
+     async function loadCharacters() {
+      const res = await fetch('characters_25.json');
+      characters = await res.json();
     }
+
 
 async function handleStart() {
   console.log('Start clicked, characters.length:', characters.length);
