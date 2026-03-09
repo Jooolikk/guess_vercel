@@ -994,22 +994,12 @@ async function handleStart() {
     }
 
     function handleExit() { window.location.reload(); }
-   const startBtn = document.getElementById('startGame');
-    const guessBtn = document.getElementById('guessBtn');
-    const exitBtn = document.getElementById('exitBtn');
-    const walletConnectBtn = document.getElementById('walletConnect');
-
-	  function handleExit() { window.location.reload(); }
-    startBtn.addEventListener('click', () => {
-      console.log('Start clicked!');
-      handleStart();
-    });
-    guessBtn.addEventListener('click', handleGuessClick);
-    exitBtn.addEventListener('click', handleExit);
-    walletConnectBtn.addEventListener('click', connectWallet);
-
-    console.log('Events attached');
-
+   
+startBtn.addEventListener('click', handleStart);
+guessBtn.addEventListener('click', handleGuessClick);
+exitBtn.addEventListener('click', handleExit);
+walletConnectBtn.addEventListener('click', connectWallet);
+	  
     loadCharacters();
   </script>
 </body>
