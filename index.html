@@ -467,7 +467,13 @@
 
     async function loadCharacters() {
       const res = await fetch('characters_25.json');
-      characters = await res.json();
+      if (!res.ok) throw new Error('JSON 404: ' + res.status);
+characters = await res.json();
+console.log('Loaded:', characters.length);
+} catch (e) {
+  console.error('JSON fail:', e);
+  showNotif('Characters not found: ' + e.message, 'no');
+	    }
     }
 
     function showNotif(message, type = '') {
