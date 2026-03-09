@@ -747,26 +747,33 @@ const ABI = [
 
 let contract, currentGameId = null;
 
-
     
-     async function loadCharacters() {
-      const res = await fetch('characters_25.json');
-      characters = await res.json();
+    async function connectWallet() {
+         if (!window.ethereum) {
+    showNotif('Please install MetaMask', 'no');
+    return;
+  }
+      try {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        account = accounts[0];
+        showNotif('Wallet connected', 'yes');
+      } catch (e) {
+        console.error(e);
+        showNotif('Wallet rejected', 'no');
+      }
     }
 
-
-async function handleStart() {
-  console.log('Start clicked, characters.length:', characters.length);
-  if (!characters.length) {
-    console.log('Loading characters...');
-    await loadCharacters();
-    console.log('Loaded:', characters.length);
-  }
+    async function handleStart() {
+      if (!characters.length) await loadCharacters();
+      if (window.ethereum && !account) {
+        await connectWallet();
+      }
       const confirmed = confirm('Pay 0.01 AVAX entry fee to start?');
       if (!confirmed) return;
       // Here: smart contract call joinGame() with 0.01 AVAX
       initGameState();
     }
+
 
     function initGameState() {
       gameStarted = true;
