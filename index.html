@@ -758,7 +758,7 @@ let contract, currentGameId = null;
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         account = accounts[0];
         showNotif('Wallet connected', 'yes');
-      } catch (e) {
+      } catch {
         console.error(e);
         showNotif('Wallet rejected', 'no');
       }
