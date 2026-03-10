@@ -5,17 +5,16 @@
   <title>Guess Who on Avalanche</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #05030a;
-      color: #fdfdfd;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
+ body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, #05030a 0, #020108 50%, #000 100%);
+  color: #fdfdfd;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
     .app {
       width: 100%;
       max-width: 1400px;
@@ -41,17 +40,17 @@
     .exit-btn:hover { background: rgba(255,255,255,0.18); }
     .top-right {
       display: flex;
-      flex-direction: row;
-      gap: 20px;
-      align-items: center;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
     }
     .top-btn {
-      padding: 12px 20px;
+      padding: 8px 16px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.35);
       background: rgba(0,0,0,0.7);
       color: #ffd978;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.18s ease;
       box-shadow: 0 0 12px rgba(255,200,80,0.4);
@@ -80,69 +79,72 @@
       margin-bottom: 18px;
     }
     .start-btn {
-      width: 260px;
-      height: 90px;
-      border: none;
-      background: transparent url('start.png') center/contain no-repeat;
-      cursor: pointer;
-      transition: transform 0.18s ease, filter 0.18s ease;
-    }
+  width: 260px;
+  height: 90px;
+  border: none;
+  background: transparent;
+  background-image: url('start.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
     .start-btn:hover { transform: scale(1.03); filter: brightness(1.1); }
 
     .table-wrapper {
-      display: flex;
-      justify-content: center;
-      margin-top: 6px;
-      margin-bottom: 26px;
-	  height: 720px;  
-      max-width: 1800px; 
-    }
-    .table {
-      position: relative;
-      width: 100%;
-      max-width: 1800px;
-      height: 720px;
-      background: url('table.png') center/contain no-repeat;
-    }
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;
+  margin-bottom: 30px;
+  height: 45vh;         
+}
 
-    .player-seat {
-      position: absolute;
-      width: 280px;
-      height: 320px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-	  padding-bottom: 15px; 
-    }
-    /* tune these to match heads on table.png */
-  .seat-1 { top: 30px; left: 50%; transform: translateX(-50%);  }
-.seat-2 { top: -130px; left: 2%; }
-.seat-3 { top: -225px; left: 15%; }
-.seat-4 { top: -225px; right: 15%; }
-.seat-5 { top: -130px; right: 2%; }
-.seat-6 { top: -250px; left: 50%; transform: translateX(-50%); }
+.table {
+  position: relative;
+  width: 100%;
+  max-width: 1150px;         
+  height: 100%;            
+ background: url('table.png') center/contain no-repeat,
+            radial-gradient(circle at top, #17141f 0, #050208 70%);
+}
 
+
+ .player-seat {
+  position: absolute;
+  width: 120px;
+  height: 40px;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.seat-1 { top: 40px; left: 50%; transform: translateX(-50%); }
+.seat-2 { top: 70px; left: 18%; }
+.seat-3 { top: 70px; left: 36%; }
+.seat-4 { top: 70px; right: 36%; }
+.seat-5 { top: 70px; right: 18%; }
+.seat-6 { top: 210px; left: 50%; transform: translateX(-50%); }
 
     .player-name-tag {
-      padding: 12px 24px;
-      border-radius: 20px;
+      padding: 4px 10px;
+      border-radius: 999px;
       background: rgba(0,0,0,0.75);
-      border: 2 solid rgba(120,200,255,0.9);
-      font-size: 1.1rem;
+      border: 1px solid rgba(120,200,255,0.9);
+      font-size: 0.7rem;
       white-space: nowrap;
       position: relative;
       color: #e9f5ff;
       box-shadow:
-        0 0 8px rgba(0,150,255,0.9),
+        0 0 4px rgba(0,150,255,0.9),
         0 0 10px rgba(0,150,255,0.7),
         0 0 18px rgba(0,150,255,0.5);
       text-shadow: 0 0 6px rgba(0,150,255,0.9);
     }
     .player-seat.current-turn .player-name-tag {
       box-shadow:
-        0 0 12px rgba(255,210,120,1),
-        0 0 28px rgba(255,190,80,0.9),
-        0 0 48px rgba(255,160,60,0.9);
+        0 0 6px rgba(255,210,120,1),
+        0 0 14px rgba(255,190,80,0.9),
+        0 0 24px rgba(255,160,60,0.9);
       border-color: rgba(255,220,140,1);
       color: #fffdf5;
       animation: neonPulse 1.3s ease-in-out infinite alternate;
@@ -150,20 +152,20 @@
     @keyframes neonPulse {
       0% {
         transform: translateY(0);
-        text-shadow: 0 0 12px rgba(255,220,140,0.8);
+        text-shadow: 0 0 6px rgba(255,220,140,0.8);
       }
       100% {
         transform: translateY(-1px);
-        text-shadow: 0 0 20px rgba(255,250,210,1);
+        text-shadow: 0 0 10px rgba(255,250,210,1);
       }
     }
 
-    .player-name-hidden .player-name-tag {
-  color: transparent !important;
-  text-shadow: none !important;
-  background: transparent !important;   
-  border-color: transparent !important;  
-  box-shadow: none !important; 
+ .player-name-hidden .player-name-tag {
+  color: transparent;
+  text-shadow: none;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
     .player-out {
       filter: grayscale(0.9) brightness(0.4);
@@ -171,16 +173,22 @@
 
     .question-panel {
       margin-top: 8px;
-      display: grid;
-      grid-template-columns: 3fr 1.5fr;
-      gap: 18px;
-      align-items: center;
-    }
-    .question-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
+  display: grid;
+  grid-template-columns: 2fr 1fr; 
+  gap: 18px;
+  align-items: flex-start;
+}
+    .qa-left {
+  display: flex;
+  justify-content: center;
+}
+.question-grid {
+  width: 100%;
+  max-width: 520px;           
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
     .question-btn {
       position: relative;
       width: 100%;
@@ -189,21 +197,25 @@
       cursor: pointer;
       padding: 8px 18px;
     }
-    .question-btn-inner {
-      position: relative;
-      padding: 10px 18px;
-      border-radius: 999px;
-      color: #fff4e6;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: 38px;
-      background: url('blue.png') center/100% 100% no-repeat;
-      box-shadow: 0 0 16px rgba(90,150,255,0.6);
-      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-    }
+.question-btn-inner {
+  background-image: url('blue.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  padding: 10px 18px;
+  border-radius: 999px;
+  color: #fff4e6;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 38px;
+  box-shadow: 0 0 16px rgba(90,150,255,0.6);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
     .question-btn:hover .question-btn-inner {
       transform: translateY(-1px);
       filter: brightness(1.1);
@@ -229,14 +241,18 @@
       align-items: center;
       gap: 12px;
     }
-    .guess-main-btn {
-      width: 300px;
-      height: 300px;
-      border: none;
-      background: transparent url('button.png') center/contain no-repeat;
-      cursor: pointer;
-      transition: transform 0.18s ease, filter 0.18s ease;
-    }
+.guess-main-btn {
+  width: 170px;
+  height: 170px;
+  border: none;
+  background: transparent;
+  background-image: url('button.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
     .guess-main-btn:hover {
       transform: translateY(-2px) scale(1.03);
       filter: brightness(1.05);
@@ -249,7 +265,7 @@
     }
 
     .guess-options {
-      margin-top: -50px;
+      margin-top: 6px;
       display: none;
       gap: 8px;
       flex-wrap: wrap;
@@ -339,13 +355,24 @@
       100% { opacity:1; transform:scale(1); }
     }
     .win-card {
-      padding: 24px 30px;
-      border-radius: 20px;
-      background: radial-gradient(circle at top,#fff6c4,#ffc857,#ff7b37);
-      color:#3b0b20;
-      text-align: center;
-      box-shadow: 0 22px 55px rgba(0,0,0,0.9);
-    }
+  position: relative;
+  padding: 24px 30px;
+  border-radius: 20px;
+  background: radial-gradient(circle at top,#fff6c4,#ffc857,#ff7b37);
+  color:#3b0b20;
+  text-align: center;
+  box-shadow: 0 22px 55px rgba(0,0,0,0.9);
+}
+    .win-close {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #5a2a0a;
+}
     .win-title {
       font-weight: 900;
       font-size: 1.8rem;
@@ -366,13 +393,14 @@
   <div class="notification" id="notif"></div>
   <div class="fireworks" id="fireworks"></div>
   <div class="win-overlay" id="winOverlay">
-    <div class="win-card">
-      <div class="win-title">YOU WON!</div>
-      <div class="win-amount" id="winAmount">+0.00 AVAX</div>
-      <div class="win-sub">Prize sent to your wallet</div>
-      <div class="sub-message">SORRY, TRY ANOTHER ROUND! for other players</div>
-    </div>
+  <div class="win-card">
+    <button class="win-close" id="winClose">✕</button>
+    <div class="win-title" id="winTitle">YOU WON!</div>
+    <div class="win-amount" id="winAmount">+0.00 AVAX</div>
+    <div class="win-sub" id="winSub">Prize sent to your wallet</div>
+    <div class="sub-message" id="winMessage">SORRY, TRY ANOTHER ROUND! for other players</div>
   </div>
+</div>
 
   <div class="app">
     <div class="top-row">
@@ -453,6 +481,9 @@
     let remainingIdsPerSeat = {};
     let gameStarted = false;
     let account = null;
+    let turnTimer = null;
+    let turnDeadline = null;
+    const TURN_MS = 60_000;
 
     const notifEl = document.getElementById('notif');
     const startBtn = document.getElementById('startGame');
@@ -467,13 +498,7 @@
 
     async function loadCharacters() {
       const res = await fetch('characters_25.json');
-      if (!res.ok) throw new Error('JSON 404: ' + res.status);
-characters = await res.json();
-console.log('Loaded:', characters.length);
-} catch (e) {
-  console.error('JSON fail:', e);
-  showNotif('Characters not found: ' + e.message, 'no');
-	    }
+      characters = await res.json();
     }
 
     function showNotif(message, type = '') {
@@ -501,258 +526,12 @@ console.log('Loaded:', characters.length);
       return sh.slice(0, Math.min(count, sh.length));
     }
 
-const CONTRACT_ADDRESS = '0x86dd48978eD1254eE1De3aec97DC0830d0c51136';
-
-const ABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			}
-		],
-		"name": "claimWin",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "createGame",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "creator",
-				"type": "address"
-			}
-		],
-		"name": "GameCreated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "seed",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint8",
-				"name": "firstPlayer",
-				"type": "uint8"
-			}
-		],
-		"name": "GameReady",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			}
-		],
-		"name": "joinGame",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint8",
-				"name": "index",
-				"type": "uint8"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "player",
-				"type": "address"
-			}
-		],
-		"name": "PlayerJoined",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "winner",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "prize",
-				"type": "uint256"
-			}
-		],
-		"name": "WinnerClaimed",
-		"type": "event"
-	},
-	{
-		"stateMutability": "payable",
-		"type": "receive"
-	},
-	{
-		"inputs": [],
-		"name": "ENTRY_FEE",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "gameCounter",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "games",
-		"outputs": [
-			{
-				"internalType": "uint8",
-				"name": "playerCount",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "prizePool",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "charactersSeed",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint8",
-				"name": "firstPlayer",
-				"type": "uint8"
-			},
-			{
-				"internalType": "address",
-				"name": "winner",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "finished",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			}
-		],
-		"name": "getPlayers",
-		"outputs": [
-			{
-				"internalType": "address[6]",
-				"name": "",
-				"type": "address[6]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "MAX_PLAYERS",
-		"outputs": [
-			{
-				"internalType": "uint8",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
-
-let contract, currentGameId = null;
-
-    
     async function connectWallet() {
-         if (!window.ethereum) {
-    showNotif('Please install MetaMask', 'no');
-    return;
-  }
+      console.log('MetaMask?', window.ethereum);
+      if (!window.ethereum) {
+        alert('Please install MetaMask');
+        return;
+      }
       try {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         account = accounts[0];
@@ -773,7 +552,6 @@ let contract, currentGameId = null;
       // Here: smart contract call joinGame() with 0.01 AVAX
       initGameState();
     }
-
 
     function initGameState() {
       gameStarted = true;
@@ -799,7 +577,7 @@ let contract, currentGameId = null;
       }
 
       const mySeatEl = document.querySelector('.player-seat[data-seat="' + activeSeat + '"]');
-      mySeatEl.classList.add('player-name-hidden');
+mySeatEl.classList.add('player-name-hidden');
 
       currentSeat = Math.floor(Math.random() * 6) + 1;
       setCurrentTurn(currentSeat);
@@ -817,25 +595,58 @@ let contract, currentGameId = null;
       seatEl.classList.add('current-turn');
     }
 
-    function renderQuestionsForSeat(seat) {
-      questionGrid.innerHTML = '';
-      const usedIds = Array.from(askedQuestionIds);
-      const roundQuestions = randomSample(QUESTION_POOL, 4, usedIds);
-      roundQuestions.forEach(q => {
-        const btn = document.createElement('button');
-        btn.className = 'question-btn';
-        btn.dataset.qid = q.id;
-        btn.dataset.attr = q.attr;
-        const inner = document.createElement('div');
-        inner.className = 'question-btn-inner';
-        inner.textContent = q.text;
-        btn.appendChild(inner);
-        if (seat === activeSeat) {
-          btn.addEventListener('click', () => handleQuestionClick(seat, btn, q));
-        }
-        questionGrid.appendChild(btn);
-      });
+   function renderQuestionsForSeat(seat) {
+  questionGrid.innerHTML = '';
+  const usedIds = Array.from(askedQuestionIds);
+  const roundQuestions = randomSample(QUESTION_POOL, 4, usedIds);
+
+  if (!roundQuestions.length) {
+    if (seat === activeSeat && gameStarted) {
+      const options = buildGuessOptions(seat);
+      showNotif('No more questions, time to guess!', 'no');
+      showGuessOptions(options);
+      guessBtn.disabled = false;
     }
+    return;
+  }
+  
+  roundQuestions.forEach(q => {
+    const btn = document.createElement('button');
+    btn.className = 'question-btn';
+    btn.dataset.qid = q.id;
+    btn.dataset.attr = q.attr;
+    const inner = document.createElement('div');
+    inner.className = 'question-btn-inner';
+    inner.textContent = q.text;
+    btn.appendChild(inner);
+    if (seat === activeSeat) {
+      btn.addEventListener('click', () => handleQuestionClick(seat, btn, q));
+    }
+    questionGrid.appendChild(btn);
+  });
+function showEndResult(isWinner) {
+  fireworksEl.classList.toggle('show', isWinner);
+
+  if (isWinner) {
+    const prize = 0.05;
+    winTitleEl.textContent = 'YOU WON!';
+    winAmountEl.textContent = '+' + prize.toFixed(2) + ' AVAX';
+    winSubEl.textContent = 'Prize sent to your wallet';
+    winMessageEl.textContent = 'SORRY, TRY ANOTHER ROUND! for other players';
+  } else {
+    winTitleEl.textContent = 'TRY ANOTHER ROUND';
+    winAmountEl.textContent = '+0.00 AVAX';
+    winSubEl.textContent = 'This time you did not win';
+    winMessageEl.textContent = 'SORRY, TRY ANOTHER ROUND!';
+  }
+
+  winOverlay.classList.add('show');
+}
+
+
+     
+}
+
 
     function handleQuestionClick(seat, btn, question) {
       if (!gameStarted || seat !== currentSeat || seat !== activeSeat) return;
@@ -866,7 +677,7 @@ let contract, currentGameId = null;
         updateGuessButton();
         setTimeout(() => {
           renderQuestionsForSeat(seat);
-          if (seat !== activeSeat) setTimeout(botTurnStep, 600);
+          if (seat !== activeSeat) setTimeout(botTurnStep, 3000);
         }, 600);
       } else {
         btn.classList.add('wrong');
@@ -893,22 +704,66 @@ let contract, currentGameId = null;
     }
 
     function passTurn() {
-      let nextSeat = currentSeat;
-      for (let i = 0; i < 6; i++) {
-        nextSeat = ((nextSeat) % 6) + 1;
-        const seatEl = document.querySelector('.player-seat[data-seat="' + nextSeat + '"]');
-        if (!seatEl.classList.contains('player-out')) {
-          currentSeat = nextSeat;
-          break;
-        }
-      }
+      clearTurnTimer();
+let nextSeat = currentSeat;
+  let attempts = 0;
+  while (attempts < 6) {
+    nextSeat = ((nextSeat) % 6) + 1;
+    const seatEl = document.querySelector('.player-seat[data-seat="' + nextSeat + '"]');
+    if (!seatEl.classList.contains('player-out')) {
+      currentSeat = nextSeat;
       setCurrentTurn(currentSeat);
       renderQuestionsForSeat(currentSeat);
       updateGuessButton();
       if (currentSeat !== activeSeat && gameStarted) {
-        setTimeout(botTurnStep, 800);
+        setTimeout(botTurnStep, 4000);
+      } else if (gameStarted) {
+        startTurnTimer();
       }
+      return;
     }
+    attempts++;
+  }
+
+  // все выбыли → завершаем игру без победителя
+  gameStarted = false;
+  showEndResult(false);
+}
+      function startTurnTimer() {
+  clearTurnTimer();
+  turnDeadline = Date.now() + TURN_MS;
+  turnTimer = setTimeout(() => {
+    handleTurnTimeout();
+  }, TURN_MS);
+}
+
+function clearTurnTimer() {
+  if (turnTimer) {
+    clearTimeout(turnTimer);
+    turnTimer = null;
+  }
+}
+
+function handleTurnTimeout() {
+  if (!gameStarted) return;
+  // если игрок не ответил за минуту — принудительно передаём ход
+  showNotif('Time is up!', 'no');
+  yesStreakForSeat[currentSeat] = 0;
+  updateGuessButton();
+  passTurn();
+}
+
+  setCurrentTurn(currentSeat);
+  renderQuestionsForSeat(currentSeat);
+  updateGuessButton();
+  
+  if (currentSeat === activeSeat && gameStarted) {
+    startTurnTimer();
+  }
+  
+  if (currentSeat !== activeSeat && gameStarted) {
+    setTimeout(botTurnStep, 4000);
+  }
 
     function botTurnStep() {
       if (!gameStarted || currentSeat === activeSeat) return;
@@ -980,31 +835,29 @@ let contract, currentGameId = null;
     }
 
     function handleWrongGuess(seat) {
-      const seatEl = document.querySelector('.player-seat[data-seat="' + seat + '"]');
-      seatEl.classList.add('player-out');
-      showNotif('NO', 'no');
-      yesStreakForSeat[seat] = 0;
-      if (seat === activeSeat) updateGuessButton();
-      passTurn();
-    }
+  const seatEl = document.querySelector('.player-seat[data-seat="' + seat + '"]');
+  seatEl.classList.add('player-out');
+  showNotif('NO', 'no');
+  yesStreakForSeat[seat] = 0;
+  if (seat === activeSeat) updateGuessButton();
+  passTurn();
+}
 
-    function handleWin(seat) {
-      fireworksEl.classList.add('show');
-      const prize = 0.05;
-      winAmountEl.textContent = '+' + prize.toFixed(2) + ' AVAX';
-      winOverlay.classList.add('show');
-      showNotif('YOU WON!', 'win');
-      gameStarted = false;
-    }
+function handleWin(seat) {
+  clearTurnTimer();
+  gameStarted = false;
+  const isYou = (seat === activeSeat);
+  showEndResult(isYou);
+}
 
-    function handleExit() { window.location.reload(); }
-   
-startBtn.addEventListener('click', handleStart);
-guessBtn.addEventListener('click', handleGuessClick);
-exitBtn.addEventListener('click', handleExit);
-walletConnectBtn.addEventListener('click', connectWallet);
-	  
-    loadCharacters();
+function handleExit() { window.location.reload(); }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const notifEl = document.getElementById('notif');
+  const startBtn =
+    });
   </script>
 </body>
 </html>
+
+
