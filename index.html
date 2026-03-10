@@ -843,19 +843,22 @@ function handleTurnTimeout() {
   passTurn();
 }
 
-function handleWin(seat) {
-  clearTurnTimer();
-  gameStarted = false;
-  const isYou = (seat === activeSeat);
-  showEndResult(isYou);
-}
+  function handleWin() {
+      fireworksEl.classList.add('show');
+      const prize = 0.05; // demo value; will be from contract
+      winAmountEl.textContent = '+' + prize.toFixed(2) + ' AVAX';
+      winOverlay.classList.add('show');
+      showNotif('YOU WON!', 'win');
+      gameStarted = false;
+    }
 
-function handleExit() { window.location.reload(); }
+    function handleExit() {
+      window.location.reload();
+    }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const notifEl = document.getElementById('notif');
-  const startBtn =
-    });
+    startBtn.addEventListener('click', handleStart);
+    guessBtn.addEventListener('click', handleGuessClick);
+    exitBtn.addEventListener('click', handleExit);
   </script>
 </body>
 </html>
